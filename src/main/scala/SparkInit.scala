@@ -6,7 +6,7 @@ class SparkInit (appName:String){
  val spark = SparkSession
    .builder
    .appName(appName)
-   .config("spark-master", "local[*]")
+   .config("spark.master", "local[*]")
    .enableHiveSupport()
    .getOrCreate()
 
