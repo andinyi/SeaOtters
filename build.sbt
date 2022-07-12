@@ -12,3 +12,5 @@ libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.2.1"
 libraryDependencies += "org.apache.spark" %% "spark-hive" % "3.2.1"
 libraryDependencies += "com.lihaoyi" %% "os-lib" % "0.8.1"
 libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.29"
+libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.29"
+
