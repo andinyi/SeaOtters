@@ -1,0 +1,2 @@
+https://www.census.gov/data-tools/demo/idb/#/table?COUNTRY_YEAR=2022&COUNTRY_YR_ANIM=2022&menu=countryViz
+https://ourworldindata.org/covid-cases
