@@ -1,7 +1,6 @@
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
 
-
 class SparkInit (appName:String){
  val spark = SparkSession
    .builder
@@ -11,5 +10,5 @@ class SparkInit (appName:String){
    .getOrCreate()
 
   Logger.getLogger("org").setLevel(Level.OFF)
-  //Logger.getLogger("aka").setLevel(Level.OFF)
+  Logger.getLogger("aka").setLevel(Level.OFF)
 }
