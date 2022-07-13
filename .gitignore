@@ -4,3 +4,4 @@
 .bsp/
 project/
 target/
+metastore_db/
