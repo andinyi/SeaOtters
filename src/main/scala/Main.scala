@@ -1,5 +1,5 @@
 import org.apache.spark.sql.functions.{col, to_date}
-import org.apache.spark.sql.types.DecimalType
+import org.apache.spark.sql.types.{DecimalType, DateType}
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark
 import org.apache.spark.sql.{SaveMode, SparkSession}
@@ -13,6 +13,7 @@ object Main {
     df = df.withColumn("total_deaths", col("total_deaths").cast(DecimalType(18, 1)))
     df = df.withColumn("new_cases", col("new_cases").cast(DecimalType(18, 1)))
     df = df.withColumn("population", col("population").cast(DecimalType(18, 1)))
+    df = df.withColumn("date", col("date").cast(DateType))
     df.createOrReplaceTempView("data")
     //session.spark.sql(Query1.query1).show(false)
     //df.createOrReplaceTempView("dataView") //query 2
@@ -27,4 +28,3 @@ object Main {
     //session.spark.sql(Query7.query7()).show()
   }
 }
-
