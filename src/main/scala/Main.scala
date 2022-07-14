@@ -13,11 +13,12 @@ object Main {
     df = df.withColumn("total_deaths", col("total_deaths").cast(DecimalType(18, 1)))
     df = df.withColumn("new_cases", col("new_cases").cast(DecimalType(18, 1)))
     df = df.withColumn("population", col("population").cast(DecimalType(18, 1)))
-    df.createOrReplaceTempView("data") //query 1
+    df.createOrReplaceTempView("data")
+    //query 1
     //session.spark.sql(Query1.query1).show(false)
     //df.createOrReplaceTempView("dataView") //query 2
     //session.spark.sql(Q2.query2).show(false)
-    session.spark.sql(Query3.query3).show()
+    //session.spark.sql(Query3.query3).show()
     //session.spark.sql("SELECT location, MAX(new_cases) FROM data GROUP BY location").show()
 
     //df.createOrReplaceTempView("owid") //query 4

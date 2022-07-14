@@ -14,8 +14,8 @@ object Metastore extends App {
 
   //creating the table for owid
   session.spark.sql("Drop table if exists owid_tb")
-  session.spark.sql("create table if not exists owid_tb(continent string, location string, date string, total_cases string, total_deaths string, total_tests string, total_vaccinations string, people_vaccinated string, total_boosters string, population string, population_density string)")
-  session.spark.sql("Insert Into Table owid_tb(Select continent, location, date, total_cases, total_deaths, total_tests, total_vaccinations, people_vaccinated , total_boosters, population, population_density from owidCsv)")
+  session.spark.sql("create table if not exists owid_tb(continent string, location string, date string, total_cases string, total_deaths string, total_tests string, total_vaccinations string, people_vaccinated string, total_boosters string, population string, population_density string, median_age string)")
+  session.spark.sql("Insert Into Table owid_tb(Select continent, location, date, total_cases, total_deaths, total_tests, total_vaccinations, people_vaccinated , total_boosters, population, population_density, median_age from owidCsv)")
   session.spark.sql("Select * from owid_tb").show(1000)
 
   //creating the dataframe for covid (william) data
