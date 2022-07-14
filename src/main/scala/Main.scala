@@ -14,7 +14,6 @@ object Main {
     df = df.withColumn("new_cases", col("new_cases").cast(DecimalType(18, 1)))
     df = df.withColumn("population", col("population").cast(DecimalType(18, 1)))
     df.createOrReplaceTempView("data")
-    //query 1
     //session.spark.sql(Query1.query1).show(false)
     //df.createOrReplaceTempView("dataView") //query 2
     //session.spark.sql(Q2.query2).show(false)
