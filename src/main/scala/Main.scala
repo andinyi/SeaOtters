@@ -9,22 +9,25 @@ object Main {
   def main(args: Array[String]): Unit = {
     val session = new SparkInit("Project Sea Otters")
     var df = session.spark.read.option("header", "true").csv("datasets/owid-covid-data.csv")
-    df = df.withColumn("total_cases", col("total_cases").cast(DecimalType(18, 1)))
-    df = df.withColumn("total_deaths", col("total_deaths").cast(DecimalType(18, 1)))
-    df = df.withColumn("new_cases", col("new_cases").cast(DecimalType(18, 1)))
-    df = df.withColumn("population", col("population").cast(DecimalType(18, 1)))
-    df = df.withColumn("date", col("date").cast(DateType))
+    val basicCleaning = new BasicCleaning
+    df = basicCleaning.basicCleaning(df) // Cleaning Functions with basic casting for ETL
+    df.createOrReplaceTempView("raw")
+    df = session.spark.sql("SELECT * FROM raw WHERE iso_code NOT LIKE 'OWID_%'")
     df.createOrReplaceTempView("data")
-    //session.spark.sql(Query1.query1).show(false)
-    //df.createOrReplaceTempView("dataView") //query 2
-    //session.spark.sql(Q2.query2).show(false)
-    //session.spark.sql(Query3.query3).show()
-    //session.spark.sql("SELECT location, MAX(new_cases) FROM data GROUP BY location").show()
 
-    //df.createOrReplaceTempView("owid") //query 4
-    //session.spark.sql(Query4.query4()).show(1000000)
-    //session.spark.sql(Query5.query5).show(false)
-    //session.spark.sql(Query6.query6).show(false)
-    //session.spark.sql(Query7.query7()).show()
+    val queries = new Queries
+
+    val tmp = session.spark.sql(queries.query3())
+    tmp.createOrReplaceTempView("rate")
+    session.spark.sql(queries.query1()).show(false)
+    session.spark.sql(queries.query2()).show(false)
+    session.spark.sql(queries.query3()).show(false)
+    session.spark.sql(queries.query4()).show(false)
+    session.spark.sql(queries.query5()).show(false)
+    session.spark.sql(queries.query6()).show(false)
+    session.spark.sql(queries.query7()).show(false)
+    session.spark.sql(queries.query8()).show(false)
+    session.spark.sql(queries.query9()).show(false)
+    session.spark.sql(queries.query10()).show(false)
   }
 }
