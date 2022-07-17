@@ -11,4 +11,6 @@ class SparkInit (appName:String){
    .getOrCreate()
   Logger.getLogger("org").setLevel(Level.OFF)
   Logger.getLogger("aka").setLevel(Level.OFF)
+
+ val logger: Logger = org.apache.log4j.Logger.getRootLogger()
 }

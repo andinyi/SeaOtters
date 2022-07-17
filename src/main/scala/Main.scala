@@ -29,5 +29,9 @@ object Main {
     session.spark.sql(queries.query8()).show(false)
     session.spark.sql(queries.query9()).show(false)
     session.spark.sql(queries.query10()).show(false)
+
+    session.spark.sql("SELECT * FROM raw WHERE location = 'China'").show(1000)
+
+    session.logger.error("Program has finished running! Thanks for your time!")
   }
 }
