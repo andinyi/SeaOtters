@@ -30,4 +30,9 @@ class Queries {
   def query10():String = {
     "Select location, median_age,Round(((total_cases - total_deaths)/population)*100, 4) as recovered from data where date = '2022-07-10'"
   }
+
+  def cleanQuery():String = {
+    "SELECT tmp.location, peak/(datediff(tmp.date, t5.First_Date)) AS rate FROM tmp JOIN (SELECT location, MAX(new_cases) AS peak FROM tmp GROUP BY location) AS t1 ON (tmp.location = t1.location AND tmp.new_cases = t1.peak)"+
+      " INNER JOIN (SELECT location, to_date(MIN(date)) AS First_Date FROM (SELECT location, date FROM tmp WHERE new_cases >= 1) GROUP BY location) AS t5 ON t1.location = t5.location"
+  }
 }
