@@ -33,12 +33,8 @@ class Queries {
     "SELECT data.location, AVG(data.gdp_per_capita) AS gdp, AVG(rate) AS rate FROM data GROUP BY data.location"
   }
 
-  def query89():String = {
-    "SELECT data.location, AVG(data.population_density) AS density, AVG(data.gdp_per_capita) AS gdp, AVG(rate.rate) AS rate FROM data JOIN rate ON data.location = rate.location GROUP BY data.location"
-  }
-
   def query10():String = {
-    "SELECT location, cast(MAX(median_age) AS decimal(8,5)) AS age, MAX(INT(total_cases)), MAX(INT(total_deaths)), (MAX(INT(total_cases))-MAX(INT(total_deaths)))/MAX(INT(total_cases))*100 AS survival FROM data GROUP BY location"
+    "SELECT location, cast(MAX(median_age) AS decimal(8,5)) AS age, (MAX(INT(total_cases))-MAX(INT(total_deaths)))/MAX(INT(total_cases))*100 AS survival FROM data GROUP BY location"
   }
 
   def cleanQuery():String = {
@@ -50,7 +46,7 @@ class Queries {
     "SELECT t1.location, Without_Vaccine_newcases_over_time, With_Vaccine_newcases_over_time FROM "+
       "(SELECT location, (New_cases_after_vacc / total2) AS With_Vaccine_newcases_over_time FROM "+
       "(SELECT location,  SUM(INT(new_cases)) AS New_cases_after_vacc, COUNT(location) AS total2 "+
-      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS NOT null AND date < '2022-06-01' GROUP BY location)) AS t1"+
+      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS NOT null AND date < '2022-06-01' GROUP BY location)) AS t1 "+
       "INNER JOIN " +
       "(SELECT location, (New_cases_before_vacc / total) AS Without_Vaccine_newcases_over_time FROM "+
       "(SELECT location,  SUM(INT(new_cases)) AS New_cases_before_vacc, COUNT(location) AS total "+
