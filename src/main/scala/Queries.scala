@@ -33,7 +33,11 @@ class Queries {
     "SELECT data.location, AVG(data.gdp_per_capita) AS gdp, AVG(rate.rate) AS rate, AVG(data.gdp_per_capita)/AVG(rate.rate) AS gdp_by_rate FROM data JOIN rate ON data.location = rate.location GROUP BY data.location"
   }
 
+  def query89():String = {
+    "SELECT data.location, AVG(data.population_density) AS density, AVG(data.gdp_per_capita) AS gdp, AVG(rate.rate) AS rate FROM data JOIN rate ON data.location = rate.location GROUP BY data.location"
+  }
+
   def query10():String = {
-    "SELECT location, cast(MAX(median_age) AS decimal(8,5)) AS age, (MAX(INT(total_cases))-MAX(INT(total_deaths)))/MAX(INT(total_cases))*100 AS survival FROM data GROUP BY location"
+    "SELECT location, cast(MAX(median_age) AS decimal(8,5)) AS age, MAX(INT(total_cases)), MAX(INT(total_deaths)), (MAX(INT(total_cases))-MAX(INT(total_deaths)))/MAX(INT(total_cases))*100 AS survival FROM data GROUP BY location"
   }
 }
