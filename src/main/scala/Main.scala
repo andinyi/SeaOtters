@@ -19,15 +19,16 @@ object Main {
 
     val tmp = session.spark.sql(queries.query3())
     tmp.createOrReplaceTempView("rate")
-    session.spark.sql(queries.query1()).show(false)
-    session.spark.sql(queries.query2()).show(false)
-    session.spark.sql(queries.query3()).show(false)
-    session.spark.sql(queries.query4()).show(false)
-    session.spark.sql(queries.query5()).show(false)
-    session.spark.sql(queries.query6()).show(false)
+    //session.spark.sql(queries.query1()).show(false)
+    //session.spark.sql(queries.query2()).show(false)
+    //session.spark.sql(queries.query3()).show(false)
+    //session.spark.sql(queries.query4()).show(false)
+    //session.spark.sql(queries.query5()).show(false)
+    /*session.spark.sql(queries.query6()).show(false)
     session.spark.sql(queries.query7()).show(false)
     session.spark.sql(queries.query8()).show(false)
     session.spark.sql(queries.query9()).show(false)
-    session.spark.sql(queries.query10()).show(false)
+    session.spark.sql(queries.query10()).show(false)*/
+    session.spark.sql(queries.query11()).show(false)
   }
 }

@@ -30,4 +30,73 @@ class Queries {
   def query10():String = {
     "Select location, median_age,Round(((total_cases - total_deaths)/population)*100, 4) as recovered from data where date = '2022-07-10'"
   }
+  def query11():String = {
+
+
+    "SELECT * FROM "+
+    "(SELECT location, percent_survived_with_vaccine FROM "+
+    "(SELECT location,  MAX(INT(total_cases)), MAX(INT(total_deaths)), (MAX(INT(total_cases))-MAX(INT(total_deaths)))/MAX(INT(total_cases))*100 AS percent_survived_with_vaccine "+
+      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS NOT null GROUP BY location ORDER BY location)) AS t1 "+
+    "INNER JOIN " +
+      "(SELECT location, percent_survived_without_vaccine FROM "+
+      "(SELECT location,  MAX(INT(total_cases)), MAX(INT(total_deaths)), (MAX(INT(total_cases))-MAX(INT(total_deaths)))/MAX(INT(total_cases))*100 AS percent_survived_without_vaccine "+
+      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS null GROUP BY location)) AS t2 "+
+      "ON t1.location = t2.location"
+
+    "SELECT * FROM "+
+      "(SELECT location, New_cases_after_vacc FROM "+
+      "(SELECT location,  SUM(INT(new_cases)) AS New_cases_after_vacc "+
+      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS NOT null GROUP BY location ORDER BY location)) AS t1 "+
+      "INNER JOIN " +
+      "(SELECT location, (New_cases_before_vacc / yo) AS newcases_over_time FROM "+
+      "(SELECT location,  SUM(INT(new_cases)) AS New_cases_before_vacc, COUNT(INT(new_cases)) AS yo "+
+      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS null GROUP BY location)) AS t2 "+
+      "ON t1.location = t2.location"
+
+/***************************************************************************************************************/
+    "SELECT * FROM "+
+      "(SELECT location, (New_cases_after_vacc / yo) AS With_Vaccine_newcases_over_time FROM "+
+      "(SELECT location,  SUM(INT(new_cases)) AS New_cases_after_vacc, COUNT(location) AS yo "+
+      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS NOT null GROUP BY location ORDER BY location)) AS t1 "+
+      "INNER JOIN " +
+      "(SELECT location, (New_cases_before_vacc / total) AS Without_Vaccine_newcases_over_time FROM "+
+      "(SELECT location,  SUM(INT(new_cases)) AS New_cases_before_vacc, COUNT(location) AS total "+
+      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS null GROUP BY location)) AS t2 "+
+      "ON t1.location = t2.location"
+/*****************************************************************************************************************/
+
+    "SELECT * FROM "+
+      "(SELECT location, (New_cases_after_vacc / total2) AS With_Vaccine_newcases_over_time FROM "+
+      "(SELECT location,  SUM(INT(new_cases)) AS New_cases_after_vacc, COUNT(location) AS total2 "+
+      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS NOT null AND date < '2022-06-01' GROUP BY location ORDER BY location)) AS t1 "+
+      "INNER JOIN " +
+      "(SELECT location, (New_cases_before_vacc / total) AS Without_Vaccine_newcases_over_time FROM "+
+      "(SELECT location,  SUM(INT(new_cases)) AS New_cases_before_vacc, COUNT(location) AS total "+
+      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS null AND date < '2022-06-01' GROUP BY location)) AS t2 "+
+      "ON t1.location = t2.location"
+
+
+    /*"SELECT * FROM "+
+      "(SELECT location, percent_survived_with_vaccine FROM "+
+      "(SELECT location,  MAX(INT(total_cases)), MAX(INT(total_deaths)), (MAX(INT(total_cases))-MAX(INT(total_deaths)))/MAX(INT(total_cases))*100 AS percent_survived_with_vaccine "+
+      "FROM data WHERE continent IS NOT NULL AND (SELECT MIN(date) FROM data GROUP BY location) > (SELECT to_date(first_vac_date) FROM (SELECT location, MIN(date) AS first_vac_date FROM data WHERE total_vaccinations > 1 GROUP BY location)) GROUP BY location)) AS t1 "+
+      "INNER JOIN " +
+      "(SELECT location, percent_survived_without_vaccine FROM "+
+      "(SELECT location,  MAX(INT(total_cases)), MAX(INT(total_deaths)), (MAX(INT(total_cases))-MAX(INT(total_deaths)))/MAX(INT(total_cases))*100 AS percent_survived_without_vaccine "+
+      "FROM data WHERE continent IS NOT NULL AND data.date < (SELECT to_date(MIN(first_vac_date)) FROM (SELECT location, date AS first_vac_date FROM data WHERE total_vaccinations > 1)) GROUP BY location)) AS t2 "+
+      "ON t1.location = t2.location"
+
+    "SELECT to_date(first_vac_date) FROM "+
+      "(SELECT location, AVG(date) AS first_vac_date FROM data WHERE new_vaccinations_smoothed > 0)"*/
+
+    /*"(SELECT MIN(date) FROM data GROUP BY location)"*/
+
+
+
+
+
+
+
+
+  }
 }
