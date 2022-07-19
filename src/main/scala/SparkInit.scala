@@ -1,5 +1,5 @@
 import org.apache.log4j.{Level, Logger}
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{AnalysisException, DataFrame, SaveMode, SparkSession}
 
 class SparkInit (appName:String){
 
@@ -11,4 +11,6 @@ class SparkInit (appName:String){
    .getOrCreate()
   Logger.getLogger("org").setLevel(Level.OFF)
   Logger.getLogger("aka").setLevel(Level.OFF)
+
+ val logger: Logger = org.apache.log4j.Logger.getRootLogger()
 }
