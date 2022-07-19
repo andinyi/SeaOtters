@@ -46,12 +46,12 @@ class Queries {
     "SELECT t1.location, Without_Vaccine_newcases_over_time, With_Vaccine_newcases_over_time FROM "+
       "(SELECT location, (New_cases_after_vacc / total2) AS With_Vaccine_newcases_over_time FROM "+
       "(SELECT location,  SUM(INT(new_cases)) AS New_cases_after_vacc, COUNT(location) AS total2 "+
-      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS NOT null AND date < '2022-06-01' GROUP BY location)) AS t1 "+
+      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS NOT null AND date < '2022-06-01' GROUP BY location)) AS t1"+
       "INNER JOIN " +
       "(SELECT location, (New_cases_before_vacc / total) AS Without_Vaccine_newcases_over_time FROM "+
       "(SELECT location,  SUM(INT(new_cases)) AS New_cases_before_vacc, COUNT(location) AS total "+
       "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS null AND date < '2022-06-01' GROUP BY location)) AS t2 "+
-      "ON t1.location = t2.location"
+      "ON t1.location = t2.location orde"
 
   }
 }
