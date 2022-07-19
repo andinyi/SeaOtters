@@ -55,7 +55,7 @@ class Queries {
       "(SELECT location, (New_cases_before_vacc / total) AS Without_Vaccine_newcases_over_time FROM "+
       "(SELECT location,  SUM(INT(new_cases)) AS New_cases_before_vacc, COUNT(location) AS total "+
       "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS null AND date < '2022-06-01' GROUP BY location)) AS t2 "+
-      "ON t1.location = t2.location orde"
+      "ON t1.location = t2.location"
 
   }
 }
