@@ -47,6 +47,8 @@ object Main {
       session.spark.sql(queries.query8()).show(false)
       session.spark.sql(queries.query9()).show(false)
       session.spark.sql(queries.query10()).show(false)
+      session.spark.sql(queries.query11()).show(false)
+
     }
     if(in == "2") {
       //queries
@@ -60,6 +62,8 @@ object Main {
       session.spark.sql(queries.query8()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query8/")
       session.spark.sql(queries.query9()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query9/")
       session.spark.sql(queries.query10()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query10/")
+      session.spark.sql(queries.query11()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query11/")
+
     }
 
     session.logger.warn(s"$GREEN has finished running! Thanks for your time!$RESET")
