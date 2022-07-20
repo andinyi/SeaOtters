@@ -30,15 +30,7 @@ class Queries {
   }
 
   def query9():String = {
-<<<<<<< HEAD
-    "SELECT data.location, AVG(data.gdp_per_capita) AS gdp, AVG(rate) AS rate FROM data GROUP BY data.location"
-  }
-
-  def query10():String = {
-    "SELECT location, cast(MAX(median_age) AS decimal(8,5)) AS age, (MAX(INT(total_cases))-MAX(INT(total_deaths)))/MAX(INT(total_cases))*100 AS survival FROM data GROUP BY location"
-=======
     "SELECT location, cast(MAX(median_age) AS decimal(8,5)) AS age, MAX(INT(total_cases)), MAX(INT(total_deaths)), (MAX(INT(total_cases))-MAX(INT(total_deaths)))/MAX(INT(total_cases))*100 AS survival FROM data WHERE location != 'North Korea' GROUP BY location ORDER BY survival DESC"
->>>>>>> main
   }
 
   def cleanQuery():String = {
