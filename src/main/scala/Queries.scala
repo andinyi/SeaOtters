@@ -38,16 +38,14 @@ class Queries {
       " INNER JOIN (SELECT location, to_date(MIN(date)) AS First_Date FROM (SELECT location, date FROM tmp WHERE new_cases >= 1) GROUP BY location) AS t5 ON t1.location = t5.location"
   }
   def query10():String = {
-
-    "SELECT t1.location, Without_Vaccine_newcases_over_time, With_Vaccine_newcases_over_time FROM "+
-      "(SELECT location, (New_cases_after_vacc / total2) AS With_Vaccine_newcases_over_time FROM "+
+    "SELECT t1.location, Pre_Vaccine, Post_Vaccine, (Post_Vaccine-Pre_Vaccine) AS diff FROM "+
+      "(SELECT location, (New_cases_after_vacc / total2) AS Post_Vaccine FROM "+
       "(SELECT location,  SUM(INT(new_cases)) AS New_cases_after_vacc, COUNT(location) AS total2 "+
-      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS NOT null AND date < '2022-06-01' GROUP BY location)) AS t1 "+
+      "FROM data WHERE continent IS NOT NULL AND NOT new_vaccinations_smoothed = 'tests performed' AND new_vaccinations_smoothed IS NOT null AND date < '2022-06-01' GROUP BY location)) AS t1 "+
       "INNER JOIN " +
-      "(SELECT location, (New_cases_before_vacc / total) AS Without_Vaccine_newcases_over_time FROM "+
+      "(SELECT location, (New_cases_before_vacc / total) AS Pre_Vaccine FROM "+
       "(SELECT location,  SUM(INT(new_cases)) AS New_cases_before_vacc, COUNT(location) AS total "+
       "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS null AND date < '2022-06-01' GROUP BY location)) AS t2 "+
-      "ON t1.location = t2.location"
-
+      "ON t1.location = t2.location ORDER BY diff DESC LIMIT 20"
   }
 }
