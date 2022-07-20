@@ -26,18 +26,10 @@ class Queries {
   }
 
   def query8():String = {
-    "SELECT data.location, AVG(data.population_density) AS density, AVG(rate) as rate FROM data GROUP BY data.location"
-  }
-
-  def query9():String = {
-    "SELECT data.location, AVG(data.gdp_per_capita) AS gdp, AVG(rate) AS rate FROM data GROUP BY data.location"
-  }
-
-  def query89():String = {
     "SELECT data.location, AVG(data.population_density) AS density, AVG(data.gdp_per_capita) AS gdp, AVG(rate.rate) AS rate FROM data JOIN rate ON data.location = rate.location GROUP BY data.location ORDER BY rate DESC"
   }
 
-  def query10():String = {
+  def query9():String = {
     "SELECT location, cast(MAX(median_age) AS decimal(8,5)) AS age, MAX(INT(total_cases)), MAX(INT(total_deaths)), (MAX(INT(total_cases))-MAX(INT(total_deaths)))/MAX(INT(total_cases))*100 AS survival FROM data WHERE location != 'North Korea' GROUP BY location ORDER BY survival DESC"
   }
 
@@ -45,7 +37,8 @@ class Queries {
     "SELECT tmp.location, peak/(datediff(tmp.date, t5.First_Date)) AS rate FROM tmp JOIN (SELECT location, MAX(new_cases) AS peak FROM tmp GROUP BY location) AS t1 ON (tmp.location = t1.location AND tmp.new_cases = t1.peak)"+
       " INNER JOIN (SELECT location, to_date(MIN(date)) AS First_Date FROM (SELECT location, date FROM tmp WHERE new_cases >= 1) GROUP BY location) AS t5 ON t1.location = t5.location"
   }
-  def query11():String = {
+  
+  def query10():String = {
 
     "SELECT t1.location, Without_Vaccine_newcases_over_time, With_Vaccine_newcases_over_time FROM "+
       "(SELECT location, (New_cases_after_vacc / total2) AS With_Vaccine_newcases_over_time FROM "+
