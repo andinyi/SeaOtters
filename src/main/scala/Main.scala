@@ -9,7 +9,9 @@ import org.apache.spark.sql
 import scala.io.StdIn.readLine
 
 object Main {
+
   def main(args: Array[String]): Unit = {
+
     println(s"$CYAN")
     val session = new SparkInit("Project Sea Otters")
     println(s"$RESET")
@@ -17,6 +19,7 @@ object Main {
     //var df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
     var df = session.spark.read.option("header", "true").csv("datasets/owid-covid-data.csv")
     session.logger.info(s"$CYAN Data read in properly!$RESET")
+
 
     //ETL FUNCTIONS (CLEANS AND FORMATS DATA FOR EASE OF ANALYZING)
     session.logger.info(s"$CYAN Attempting to perform ETL operations on the dataset.$RESET")
@@ -32,8 +35,16 @@ object Main {
     df.createOrReplaceTempView("data")
     session.logger.info(s"$CYAN Dataset cleaning completed! $RESET")
 
+
+
+    val connect = new mySqlConnector
+    connect.run(session)
+    session.spark.sql("SELECT location FROM mysql GROUP BY location ORDER BY location DESC").show()
+
+
     println(s"$YELLOW Would you like to debug(1) or create csvs(2)$RESET")
     val in = readLine()
+
 
     if(in == "1") {
       //queries
