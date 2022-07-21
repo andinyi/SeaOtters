@@ -37,7 +37,7 @@ class Queries {
     "SELECT tmp.location, peak/(datediff(tmp.date, t5.First_Date)) AS rate FROM tmp JOIN (SELECT location, MAX(new_cases) AS peak FROM tmp GROUP BY location) AS t1 ON (tmp.location = t1.location AND tmp.new_cases = t1.peak)"+
       " INNER JOIN (SELECT location, to_date(MIN(date)) AS First_Date FROM (SELECT location, date FROM tmp WHERE new_cases >= 1) GROUP BY location) AS t5 ON t1.location = t5.location"
   }
-  
+
   def query10():String = {
     "SELECT t1.location, Pre_Vaccine, Post_Vaccine, (Post_Vaccine-Pre_Vaccine) AS diff FROM "+
       "(SELECT location, (New_cases_after_vacc / total2) AS Post_Vaccine FROM "+
@@ -49,4 +49,5 @@ class Queries {
       "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS null AND date < '2022-06-01' GROUP BY location)) AS t2 "+
       "ON t1.location = t2.location ORDER BY diff DESC LIMIT 20"
   }
+
 }

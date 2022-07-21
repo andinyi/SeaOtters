@@ -4,9 +4,7 @@ import org.apache.log4j.{Level, Logger}
 import org.apache.spark
 import org.apache.spark.sql.{AnalysisException, SaveMode, SparkSession}
 import Console.{CYAN, YELLOW, RED, WHITE, RESET, GREEN}
-import scala.collection.ArrayOps
 import org.apache.spark.sql
-
 import scala.io.StdIn.readLine
 
 
@@ -23,8 +21,11 @@ class OutputThread(val query: String, val session: SparkInit, val outputLocation
 }
 
 object Main {
+
   def main(args: Array[String]): Unit = {
+    
     var method = "default"
+    var output = 1
     if(args.length >= 1) {
       if(args(0) == "half") {
         method = args(0)
@@ -33,6 +34,15 @@ object Main {
         method = args(0)
       }
     }
+    if(args.length >= 2) {
+      if(args(1) == "1") {
+        output = 1
+      }
+      else if(args(1) == "0") {
+        output = 0
+      }
+    }
+
     println(s"$CYAN")
     val session = new SparkInit("Project Sea Otters")
     println(s"$RESET")
@@ -48,6 +58,7 @@ object Main {
     }
     session.logger.info(s"$CYAN Data read in properly!$RESET")
 
+
     //ETL FUNCTIONS (CLEANS AND FORMATS DATA FOR EASE OF ANALYZING)
     session.logger.info(s"$CYAN Attempting to perform ETL operations on the dataset.$RESET")
     val basicCleaning = new BasicCleaning
@@ -62,10 +73,7 @@ object Main {
     df.createOrReplaceTempView("data")
     session.logger.info(s"$CYAN Dataset cleaning completed! $RESET")
 
-    println(s"$YELLOW Would you like to debug(1) or create csvs(2)$RESET")
-    val in = readLine()
-
-    if(in == "1") {
+    if(output == 1) {
       //queries
 
       /*
@@ -137,7 +145,7 @@ object Main {
 
 
     }
-    if(in == "2") {
+    if(output == 0) {
       //queries
 
       /*
@@ -151,7 +159,6 @@ object Main {
       session.spark.sql(queries.query8()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query8/")
       session.spark.sql(queries.query9()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query9/")
       session.spark.sql(queries.query10()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query10/")
-
        */
 
       println("Outputting query 1")
@@ -207,6 +214,7 @@ object Main {
 
     }
 
+    }
     session.logger.warn(s"$GREEN has finished running! Thanks for your time!$RESET")
   }
 
