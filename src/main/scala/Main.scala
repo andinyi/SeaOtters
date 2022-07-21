@@ -25,13 +25,13 @@ object Main {
     println(s"$RESET")
 
     session.logger.info(s"$CYAN Session Created! Attempting to read in information! $RESET")
-    var df = session.spark.read.option("header", "true").csv("datasets/owid-covid-data.csv")
-    //var df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
+    //var df = session.spark.read.option("header", "true").csv("datasets/owid-covid-data.csv")
+    var df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
     if(method == "half") {
-      df = session.spark.read.option("header", "true").csv("datasets/batchedOwid/owid1.csv", "datasets/batchedOwid/owid2.csv", "datasets/batchedOwid/owid3.csv", "datasets/batchedOwid/owid4.csv", "datasets/batchedOwid/owid5.csv")
+      df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid1.csv", "hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid2.csv", "hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid3.csv", "hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid4.csv", "hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid5.csv")
     }
     else if(method == "small") {
-      df = session.spark.read.option("header", "true").csv("datasets/batchedOwid/owid2.csv")
+      df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid2.csv")
     }
     session.logger.info(s"$CYAN Data read in properly!$RESET")
 
