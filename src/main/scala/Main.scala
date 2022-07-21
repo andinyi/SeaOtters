@@ -8,7 +8,9 @@ import org.apache.spark.sql
 import scala.io.StdIn.readLine
 
 object Main {
+
   def main(args: Array[String]): Unit = {
+    
     var method = "default"
     var output = 1
     if(args.length >= 1) {
@@ -43,6 +45,7 @@ object Main {
     }
     session.logger.info(s"$CYAN Data read in properly!$RESET")
 
+
     //ETL FUNCTIONS (CLEANS AND FORMATS DATA FOR EASE OF ANALYZING)
     session.logger.info(s"$CYAN Attempting to perform ETL operations on the dataset.$RESET")
     val basicCleaning = new BasicCleaning
@@ -69,6 +72,8 @@ object Main {
       session.spark.sql(queries.query8()).show(false)
       session.spark.sql(queries.query9()).show(false)
       session.spark.sql(queries.query10()).show(false)
+      session.spark.sql(queries.query11()).show(false)
+
     }
     if(output == 0) {
       //queries
@@ -82,6 +87,8 @@ object Main {
       session.spark.sql(queries.query8()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query8/")
       session.spark.sql(queries.query9()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query9/")
       session.spark.sql(queries.query10()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query10/")
+      session.spark.sql(queries.query11()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query11/")
+
     }
     session.logger.warn(s"$GREEN has finished running! Thanks for your time!$RESET")
   }
