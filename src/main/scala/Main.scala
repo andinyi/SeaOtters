@@ -5,19 +5,44 @@ import org.apache.spark
 import org.apache.spark.sql.{AnalysisException, SaveMode, SparkSession}
 import Console.{CYAN, YELLOW, RED, WHITE, RESET, GREEN}
 import org.apache.spark.sql
-
 import scala.io.StdIn.readLine
 
 object Main {
 
   def main(args: Array[String]): Unit = {
+    
+    var method = "default"
+    var output = 1
+    if(args.length >= 1) {
+      if(args(0) == "half") {
+        method = args(0)
+      }
+      else if(args(0) == "small") {
+        method = args(0)
+      }
+    }
+    if(args.length >= 2) {
+      if(args(1) == "1") {
+        output = 1
+      }
+      else if(args(1) == "0") {
+        output = 0
+      }
+    }
 
     println(s"$CYAN")
     val session = new SparkInit("Project Sea Otters")
     println(s"$RESET")
+
     session.logger.info(s"$CYAN Session Created! Attempting to read in information! $RESET")
-    //var df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
-    var df = session.spark.read.option("header", "true").csv("datasets/owid-covid-data.csv")
+    //var df = session.spark.read.option("header", "true").csv("datasets/owid-covid-data.csv")
+    var df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
+    if(method == "half") {
+      df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid1.csv", "hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid2.csv", "hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid3.csv", "hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid4.csv", "hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid5.csv")
+    }
+    else if(method == "small") {
+      df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid2.csv")
+    }
     session.logger.info(s"$CYAN Data read in properly!$RESET")
 
 
@@ -35,18 +60,7 @@ object Main {
     df.createOrReplaceTempView("data")
     session.logger.info(s"$CYAN Dataset cleaning completed! $RESET")
 
-
-
-    val connect = new mySqlConnector
-    connect.run(session)
-    session.spark.sql("SELECT location FROM mysql GROUP BY location ORDER BY location DESC").show()
-
-
-    println(s"$YELLOW Would you like to debug(1) or create csvs(2)$RESET")
-    val in = readLine()
-
-
-    if(in == "1") {
+    if(output == 1) {
       //queries
       session.spark.sql(queries.query1()).show(false)
       session.spark.sql(queries.query2()).show(false)
@@ -61,7 +75,7 @@ object Main {
       session.spark.sql(queries.query11()).show(false)
 
     }
-    if(in == "2") {
+    if(output == 0) {
       //queries
       session.spark.sql(queries.query1()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query1/")
       session.spark.sql(queries.query2()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query2/")
@@ -76,7 +90,6 @@ object Main {
       session.spark.sql(queries.query11()).coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").csv("./resultCsv/query11/")
 
     }
-
     session.logger.warn(s"$GREEN has finished running! Thanks for your time!$RESET")
   }
 }
