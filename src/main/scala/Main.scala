@@ -78,8 +78,8 @@ object Main {
     }
     session.logger.info(s"$CYAN Data read in properly!$RESET")
 
-    /*val connect = new mySqlConnector
-    connect.run(session)*/
+    val connect = new mySqlConnector
+    connect.run(session)
 
     //ETL FUNCTIONS (CLEANS AND FORMATS DATA FOR EASE OF ANALYZING)
     session.logger.info(s"$CYAN Attempting to perform ETL operations on the dataset.$RESET")
@@ -151,6 +151,7 @@ object Main {
         session.spark.sql(queries.query8()).show(false)
         session.spark.sql(queries.query9()).show(false)
         session.spark.sql(queries.query10()).show(false)
+
 
       }
     }

@@ -1,8 +1,8 @@
 class mySqlConnector {
   def run(session : SparkInit) {
     val driver = "com.mysql.cj.jdbc.Driver"
-    val username = "InsertUSER"
-    val password = "InsertPSW"
+    val username = "INSERTuser"
+    val password = "INSERTpsw"
 
     try {
       Class.forName(driver)
