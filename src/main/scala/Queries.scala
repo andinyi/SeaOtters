@@ -42,14 +42,15 @@ class Queries {
   def query10():String = {
     "SELECT t1.location, Pre_Vaccine, Post_Vaccine, (Post_Vaccine-Pre_Vaccine) AS diff FROM "+
       "(SELECT location, (New_cases_after_vacc / total2) AS Post_Vaccine FROM "+
-      "(SELECT location,  SUM(INT(new_cases)) AS New_cases_after_vacc, COUNT(location) AS total2 "+
-      "FROM data WHERE continent IS NOT NULL AND NOT new_vaccinations_smoothed = 'tests performed' AND new_vaccinations_smoothed IS NOT null AND date < '2022-06-01' GROUP BY location)) AS t1 "+
+      "(SELECT location,  SUM(new_cases) AS New_cases_after_vacc, COUNT(location) AS total2 "+
+      "FROM mysql WHERE NOT continent = '' AND NOT new_vaccinations_smoothed = 'tests performed' AND NOT Int(new_vaccinations_smoothed) IS Null AND date < '2022-06-01' GROUP BY location)) AS t1 "+
       "INNER JOIN " +
       "(SELECT location, (New_cases_before_vacc / total) AS Pre_Vaccine FROM "+
-      "(SELECT location,  SUM(INT(new_cases)) AS New_cases_before_vacc, COUNT(location) AS total "+
-      "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS null AND date < '2022-06-01' GROUP BY location)) AS t2 "+
+      "(SELECT location,  SUM(new_cases) AS New_cases_before_vacc, COUNT(location) AS total "+
+      "FROM mysql WHERE NOT continent = '' AND Int(new_vaccinations_smoothed) is NULL AND date < '2022-06-01' GROUP BY location)) AS t2 "+
       "ON t1.location = t2.location ORDER BY diff DESC LIMIT 20"
-  }
+
+      }
 
 
 }
