@@ -15,15 +15,16 @@ class Queries {
   }
 
   def query5():String = {
-    "SELECT location, MAX(INT(total_cases)), MAX(INT(population)), MAX(INT(total_cases))/MAX(INT(population)) AS cases_per_person FROM data WHERE continent IS NOT NULL GROUP BY location ORDER BY cases_per_person DESC"
+    "SELECT location, MAX(INT(total_cases)), MAX(INT(population)), MAX(INT(total_cases))/MAX(INT(population))*100 AS cases_per_person FROM data WHERE continent IS NOT NULL GROUP BY location ORDER BY cases_per_person DESC"
   }
   def query6():String = {
     "SELECT location, MAX(INT(total_cases)), MAX(INT(total_tests)), (MAX(INT(total_cases))/MAX(INT(total_tests)))*100 as percent_positive FROM data WHERE continent IS NOT NULL GROUP BY location HAVING percent_positive < 95 ORDER BY percent_positive DESC"
   }
-
+  
   def query7():String = {
-    "SELECT location, MAX(INT(people_vaccinated)), MAX(INT(population)), (MAX(INT(people_vaccinated))/MAX(INT(population)))*100 AS vaccinated FROM data GROUP BY location order by vaccinated desc"
+    "SELECT location, MAX(INT(people_vaccinated)), MAX(INT(population)), AVG(data.gdp_per_capita) AS gdp, (MAX(INT(people_vaccinated))/MAX(INT(population)))*100 AS vaccinated FROM data GROUP BY location order by vaccinated desc"
   }
+
 
   def query8():String = {
     "SELECT data.location, AVG(data.population_density) AS density, AVG(data.gdp_per_capita) AS gdp, AVG(rate.rate) AS rate FROM data JOIN rate ON data.location = rate.location GROUP BY data.location ORDER BY rate DESC"
@@ -49,5 +50,6 @@ class Queries {
       "FROM data WHERE continent IS NOT NULL AND new_vaccinations_smoothed IS null AND date < '2022-06-01' GROUP BY location)) AS t2 "+
       "ON t1.location = t2.location ORDER BY diff DESC LIMIT 20"
   }
+
 
 }
