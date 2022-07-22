@@ -51,4 +51,5 @@ class Queries {
       "ON t1.location = t2.location ORDER BY diff DESC LIMIT 20"
   }
 
+
 }
