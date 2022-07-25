@@ -72,7 +72,7 @@ object Main {
     println(s"$RESET")
 
     session.logger.info(s"$CYAN Session Created! Attempting to read in information! $RESET")
-    var df = session.spark.read.option("header", "true").csv("datasets/owid-covid-data.csv")
+    var df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
     //var df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
 
     if(method != "default") {
