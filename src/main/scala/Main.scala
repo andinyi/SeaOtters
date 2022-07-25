@@ -23,9 +23,10 @@ object Main {
 
   def main(args: Array[String]): Unit = {
     
-    var method = "--default"
+    var method = "default"
     var output:Boolean = false
     var thread:Boolean = false
+    var loadMethod = "hdfs"
     if(args.length >= 1) {
       if(args(0) == "--half") {
         method = "half"
@@ -33,17 +34,22 @@ object Main {
       else if(args(0) == "--small") {
         method = "small"
       }
+      else if(args(0) == "--mysql") {
+        method = "mysql"
+      }
       else if(args(0) == "--help") {
         println(s"$GREEN How to call program\n" +
                         s"$RESET$CYAN(ARGUMENT 1)$RESET$GREEN\n" +
                         " --default (default) to do a run with full dataset\n" +
                         " --small to load a small subset of the dataset\n" +
                         " --half to load a subset half the size of the dataset\n" +
+                        " --mysql to load the dataset from MySQL connection\n" +
                         s"$RESET$CYAN(ARGUMENT 2)$RESET$GREEN\n" +
                         " --debug (default) to print out query tables, debug mode\n" +
                         " --output (default) to create files for visualization\n" +
                         s"$RESET$CYAN(ARGUMENT 3)$RESET$GREEN\n" +
                         s" --thread $RESET$YELLOW(EXPERIMENTAL)$RESET$GREEN utilize multithreading for queries$RESET")
+
         return
       }
     }
@@ -69,12 +75,22 @@ object Main {
     //var df = session.spark.read.option("header", "true").csv("datasets/owid-covid-data.csv")
     var df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
 
-    if(method == "half") {
-      df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/batchedOwidHalf/owid1.csv")
+    if(method != "default") {
+      if(method == "mysql") {
+        val mysql = new mySqlConnector()
+        df = mysql.run(session)
+        session.logger.info(s"$CYAN Attempting queries using MySQL!$RESET")
+      }
+      else if(method == "half") {
+        df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/batchedOwidHalf/owid1.csv")
+        session.logger.info(s"$CYAN Attempting queries using half of the dataset!$RESET")
+      }
+      else if(method == "small") {
+        df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid5.csv")
+        session.logger.info(s"$CYAN Attempting queries using a small subset of the dataset!$RESET")
+      }
     }
-    else if(method == "small") {
-      df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid5.csv")
-    }
+
     session.logger.info(s"$CYAN Data read in properly!$RESET")
 
 
