@@ -26,7 +26,6 @@ object Main {
     var method = "default"
     var output:Boolean = false
     var thread:Boolean = false
-    var loadMethod = "hdfs"
     if(args.length >= 1) {
       if(args(0) == "--half") {
         method = "half"
@@ -53,6 +52,7 @@ object Main {
         return
       }
     }
+
     if(args.length >= 2) {
       if(args(1) == "--debug") {
         output = false
@@ -72,8 +72,8 @@ object Main {
     println(s"$RESET")
 
     session.logger.info(s"$CYAN Session Created! Attempting to read in information! $RESET")
-    //var df = session.spark.read.option("header", "true").csv("datasets/owid-covid-data.csv")
-    var df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
+    var df = session.spark.read.option("header", "true").csv("datasets/owid-covid-data.csv")
+    //var df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
 
     if(method != "default") {
       if(method == "mysql") {
@@ -93,6 +93,8 @@ object Main {
 
     session.logger.info(s"$CYAN Data read in properly!$RESET")
 
+    /*val connect = new mySqlConnector
+    connect.run(session)*/
 
     //ETL FUNCTIONS (CLEANS AND FORMATS DATA FOR EASE OF ANALYZING)
     session.logger.info(s"$CYAN Attempting to perform ETL operations on the dataset.$RESET")
@@ -164,6 +166,7 @@ object Main {
         session.spark.sql(queries.query8()).show(false)
         session.spark.sql(queries.query9()).show(false)
         session.spark.sql(queries.query10()).show(false)
+
       }
     }
     if(output) {
