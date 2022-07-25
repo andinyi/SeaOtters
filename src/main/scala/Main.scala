@@ -72,8 +72,8 @@ object Main {
     println(s"$RESET")
 
     session.logger.info(s"$CYAN Session Created! Attempting to read in information! $RESET")
-    var df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
-    //var df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
+    //var df = session.spark.read.option("header", "true").csv("datasets/owid-covid-data.csv")
+    var df = session.spark.emptyDataFrame
 
     if(method != "default") {
       if(method == "mysql") {
@@ -89,6 +89,8 @@ object Main {
         df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/batchedOwid/owid5.csv")
         session.logger.info(s"$CYAN Attempting queries using a small subset of the dataset!$RESET")
       }
+    } else {
+      df = session.spark.read.option("header", "true").csv("hdfs://localhost:9000/tmp/project2/datasets/owid-covid-data.csv")
     }
 
     session.logger.info(s"$CYAN Data read in properly!$RESET")
