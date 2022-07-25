@@ -1,0 +1,6 @@
+log4j_setting="-Dlog4j.configuration=file:log4j.properties"
+
+spark-submit --conf "spark.driver.extraJavaOptions=${log4j_setting}" --conf "spark.executor.extraJavaOptions=${log4j_setting}" --class Main --files log4j.properties projectseaotters2_2.13-0.1.0-SNAPSHOT.jar --half --debug --thread
+
+spark-submit --conf spark.eventLog.enabled=true --class Main projectseaotters2_2.13-0.1.0-SNAPSHOT.jar
+
